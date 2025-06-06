@@ -11,6 +11,30 @@ const Offline = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { playSong, currentSong, isPlaying, offlineSongs, addOfflineSong, removeOfflineSong } = useMusicContext();
 
+  useEffect(() => {
+    // Load saved songs when component mounts
+    const loadSavedSongs = async () => {
+      try {
+        const savedSongs = await OfflineAudioDB.getAllSongs();
+        savedSongs.forEach(song => {
+          addOfflineSong({
+            id: song.id,
+            title: song.title,
+            artist: song.artist,
+            album: song.album,
+            duration: song.duration,
+            audioUrl: '',
+            isLocal: true
+          });
+        });
+      } catch (error) {
+        console.error('Error loading saved songs:', error);
+      }
+    };
+
+    loadSavedSongs();
+  }, [addOfflineSong]);
+
   const handleFiles = async (files: FileList) => {
     for (const file of Array.from(files)) {
       if (file.type.startsWith('audio/')) {
@@ -43,8 +67,13 @@ const Offline = () => {
     }
   };
 
-  const deleteSong = (songId: string) => {
-    removeOfflineSong(songId);
+  const deleteSong = async (songId: string) => {
+    try {
+      await OfflineAudioDB.deleteSong(songId);
+      removeOfflineSong(songId);
+    } catch (error) {
+      console.error('Error deleting song:', error);
+    }
   };
 
   return (
