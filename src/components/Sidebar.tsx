@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Home, Search, Library, Plus, Heart, Download, Music } from 'lucide-react';
@@ -24,15 +23,15 @@ const Sidebar = () => {
     <>
       <div className="w-80 bg-gradient-to-b from-gray-900 via-gray-900 to-black p-6 flex flex-col border-r border-gray-800/50">
         <div className="mb-8">
-          <div className="flex items-center space-x-3 mb-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+          <div className="flex flex-col items-start space-y-1 mb-2">
+            <div className="flex items-center space-x-3">
               <Music size={18} className="text-white" />
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                Sonata
+              </h1>
             </div>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-              Sonata
-            </h1>
+            <p className="text-gray-400 text-sm">Your Music, Your Way</p>
           </div>
-          <p className="text-gray-400 text-sm ml-11">Your Music, Your Way</p>
         </div>
         
         <nav className="space-y-1 mb-8">
