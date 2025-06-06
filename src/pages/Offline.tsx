@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { Input } from '@/components/ui/input';
 import Layout from '../components/Layout';
 import { Upload, Play, Trash2, Music, File, FolderOpen } from 'lucide-react';
 import { useMusicContext, Song } from '../contexts/MusicContext';
@@ -106,7 +107,7 @@ const Offline = () => {
               >
                 Browse Files
               </Button>
-              <input
+              <Input
                 ref={fileInputRef}
                 type="file"
                 multiple
