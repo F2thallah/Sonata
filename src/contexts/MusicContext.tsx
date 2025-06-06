@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 export interface Song {
@@ -86,7 +85,7 @@ export const MusicProvider: React.FC<MusicProviderProps> = ({ children }) => {
     if (savedPlaylists) {
       try {
         const parsedPlaylists = JSON.parse(savedPlaylists);
-        setPlaylists(parsedPlaylists.map((p: any) => ({
+        setPlaylists(parsedPlaylists.map((p: Playlist) => ({
           ...p,
           createdAt: new Date(p.createdAt)
         })));
@@ -131,17 +130,25 @@ export const MusicProvider: React.FC<MusicProviderProps> = ({ children }) => {
     const handleTimeUpdate = () => setCurrentTime(audio.currentTime);
     const handleDurationChange = () => setDuration(audio.duration);
     const handleEnded = () => nextSong();
+    const handleAudioError = (e: Event) => {
+      setIsPlaying(false);
+      setCurrentTime(0);
+      setDuration(0);
+      alert('Audio playback failed. Please check the file or try another song.');
+    };
 
     audio.addEventListener('timeupdate', handleTimeUpdate);
     audio.addEventListener('durationchange', handleDurationChange);
     audio.addEventListener('ended', handleEnded);
+    audio.addEventListener('error', handleAudioError);
 
     return () => {
       audio.removeEventListener('timeupdate', handleTimeUpdate);
       audio.removeEventListener('durationchange', handleDurationChange);
       audio.removeEventListener('ended', handleEnded);
+      audio.removeEventListener('error', handleAudioError);
     };
-  }, []);
+  }, [audio]); // eslint-disable-next-line react-hooks/exhaustive-deps
 
   const playSong = (song: Song) => {
     console.log('Playing song:', song.title);
