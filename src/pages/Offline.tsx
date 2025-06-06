@@ -1,44 +1,44 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import Layout from '../components/Layout';
 import { Upload, Play, Trash2, Music, File, FolderOpen } from 'lucide-react';
 import { useMusicContext, Song } from '../contexts/MusicContext';
 import { Button } from '@/components/ui/button';
+import { OfflineAudioDB, OfflineSongMeta } from '../services/OfflineAudioDB';
 
 const Offline = () => {
   const [dragActive, setDragActive] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { playSong, currentSong, isPlaying, offlineSongs, addOfflineSong, removeOfflineSong } = useMusicContext();
 
-  const handleFiles = (files: FileList) => {
-    Array.from(files).forEach((file) => {
+  const handleFiles = async (files: FileList) => {
+    for (const file of Array.from(files)) {
       if (file.type.startsWith('audio/')) {
-        const audioUrl = URL.createObjectURL(file);
-        const newSong: Song = {
-          id: Date.now().toString() + Math.random().toString(),
+        const id = Date.now().toString() + Math.random().toString();
+        const meta: OfflineSongMeta = {
+          id,
           title: file.name.replace(/\.[^/.]+$/, ""),
           artist: 'Local File',
           album: 'Offline Music',
           duration: 0,
-          audioUrl,
-          isLocal: true,
+          createdAt: Date.now(),
         };
-        addOfflineSong(newSong);
+        await OfflineAudioDB.saveSong(meta, file);
+        addOfflineSong({ ...meta, audioUrl: '', isLocal: true });
       }
-    });
+    }
   };
 
-  const handleDrop = (e: React.DragEvent) => {
+  const handleDrop = async (e: React.DragEvent) => {
     e.preventDefault();
     setDragActive(false);
     const files = e.dataTransfer.files;
-    handleFiles(files);
+    await handleFiles(files);
   };
 
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files) {
-      handleFiles(files);
+      await handleFiles(files);
     }
   };
 

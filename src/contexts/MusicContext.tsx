@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { OfflineAudioDB, OfflineSongMeta } from '../services/OfflineAudioDB';
 
 export interface Song {
   id: string;
@@ -78,9 +79,24 @@ export const MusicProvider: React.FC<MusicProviderProps> = ({ children }) => {
 
   // Load data from localStorage on component mount
   useEffect(() => {
+    const loadOfflineSongs = async () => {
+      const dbSongs = await OfflineAudioDB.getAllSongs();
+      const loadedSongs: Song[] = dbSongs.map((entry) => ({
+        id: entry.id,
+        title: entry.title,
+        artist: entry.artist,
+        album: entry.album,
+        duration: entry.duration,
+        coverUrl: entry.coverUrl,
+        audioUrl: URL.createObjectURL(entry.file),
+        isLocal: true,
+      }));
+      setOfflineSongs(loadedSongs);
+    };
+    loadOfflineSongs();
+
     const savedPlaylists = localStorage.getItem('musicPlaylists');
     const savedLikedSongs = localStorage.getItem('likedSongs');
-    const savedOfflineSongs = localStorage.getItem('offlineSongs');
 
     if (savedPlaylists) {
       try {
@@ -101,14 +117,6 @@ export const MusicProvider: React.FC<MusicProviderProps> = ({ children }) => {
         console.error('Error loading liked songs:', error);
       }
     }
-
-    if (savedOfflineSongs) {
-      try {
-        setOfflineSongs(JSON.parse(savedOfflineSongs));
-      } catch (error) {
-        console.error('Error loading offline songs:', error);
-      }
-    }
   }, []);
 
   // Save data to localStorage whenever state changes
@@ -121,10 +129,6 @@ export const MusicProvider: React.FC<MusicProviderProps> = ({ children }) => {
   useEffect(() => {
     localStorage.setItem('likedSongs', JSON.stringify(likedSongs));
   }, [likedSongs]);
-
-  useEffect(() => {
-    localStorage.setItem('offlineSongs', JSON.stringify(offlineSongs));
-  }, [offlineSongs]);
 
   useEffect(() => {
     const handleTimeUpdate = () => setCurrentTime(audio.currentTime);
@@ -246,18 +250,36 @@ export const MusicProvider: React.FC<MusicProviderProps> = ({ children }) => {
     return likedSongs.some(song => song.id === songId);
   };
 
-  const addOfflineSong = (song: Song) => {
-    setOfflineSongs(prev => [...prev, song]);
+  const addOfflineSong = async (song: Song, file?: Blob) => {
+    if (file) {
+      await OfflineAudioDB.saveSong({
+        id: song.id,
+        title: song.title,
+        artist: song.artist,
+        album: song.album,
+        duration: song.duration,
+        coverUrl: song.coverUrl,
+        createdAt: Date.now(),
+      }, file);
+      // Reload offline songs from DB
+      const dbSongs = await OfflineAudioDB.getAllSongs();
+      const loadedSongs: Song[] = dbSongs.map((entry) => ({
+        id: entry.id,
+        title: entry.title,
+        artist: entry.artist,
+        album: entry.album,
+        duration: entry.duration,
+        coverUrl: entry.coverUrl,
+        audioUrl: URL.createObjectURL(entry.file),
+        isLocal: true,
+      }));
+      setOfflineSongs(loadedSongs);
+    }
   };
 
-  const removeOfflineSong = (songId: string) => {
-    setOfflineSongs(prev => {
-      const updatedSongs = prev.filter(song => song.id !== songId);
-      if (updatedSongs.length === 0) {
-        localStorage.removeItem('offlineSongs');
-      }
-      return updatedSongs;
-    });
+  const removeOfflineSong = async (songId: string) => {
+    await OfflineAudioDB.deleteSong(songId);
+    setOfflineSongs(prev => prev.filter(song => song.id !== songId));
   };
 
   return (
