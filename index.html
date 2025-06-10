@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sonata - Music Player</title>
+    <link rel="icon" href="music.png" type="image/png">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        /* Base64 Placeholder Album Image */
+        :root {
+            --placeholder-album: url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD//gA7Q1JFQVRPUjogZ2QtanBlZyB2MS4wICh1c2luZyBJSkcgSlBFRyB2NjIpLCBxdWFsaXR5ID0gOTAK/9sAQwADAgIDAgIDAwMDBAMDBAUIBQUEBAUKBwcGCAwKDAwLCgsLDQ4SEA0OEQ4LCxAWEBETFBUVFQwPFxgWFBgSFBUU/9sAQwEDBAQFBAUJBQUJFA0LDRQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU/8AAEQgAyADIAwEiAAIRAQMRAf/EAB8AAAEFAQEBAQEBAAAAAAAAAAABAgMEBQYHCAkKC//EALUQAAIBAwMCBAMFBQQEAAABfQECAwAEEQUSITFBBhNRYQcicRQygZGhCCNCscEVUtHwJDNicoIJChYXGBkaJSYnKCkqNDU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6g4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2drh4uPk5ebn6Onq8fLz9PX29/j5+v/EAB8BAAMBAQEBAQEBAQEAAAAAAAABAgMEBQYHCAkKC//EALURAAIBAgQEAwQHBQQEAAECdwABAgMRBAUhMQYSQVEHYXETIjKBCBRCkaGxwQkjM1LwFWJy0QoWJDThJfEXGBkaJicoKSo1Njc4OTpDREVGR0hJSlNUVVZXWFlaY2RlZmdoaWpzdHV2d3h5eoKDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uLj5OXm5+jp6vLz9PX29/j5+v/aAAwDAQACEQMRAD8A/SiiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooA//Z');
+        }
+    </style>
+</head>
+<body class="light-mode">
+    <div class="container">
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="music.png" alt="Sonata Logo">
+                <h1>Sonata</h1>
+            </div>
+            <nav class="navigation">
+                <ul>
+                    <li data-page="home"><i class="fas fa-home"></i> Home</li>
+                    <li data-page="playlists"><i class="fas fa-list"></i> Playlists</li>
+                    <li class="active" data-page="offline"><i class="fas fa-download"></i> Offline Downloads</li>
+                    <li data-page="settings"><i class="fas fa-cog"></i> Settings</li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="theme-toggle" class="theme-btn"><i id="theme-icon" class="fas fa-moon"></i></button>
+            </div>
+        </aside>
+        
+        <main class="content">
+            <!-- Home Page -->
+            <section id="home" class="page" style="display: none;">
+                <h2>Home</h2>
+                <div class="featured-section">
+                    <h3>Featured Songs</h3>
+                    <div class="songs-grid">
+                        <!-- Songs will be dynamically added here -->
+                    </div>
+                </div>
+                <div class="recent-section">
+                    <h3>Recently Played</h3>
+                    <div class="songs-list">
+                        <!-- Recently played songs will be dynamically added here -->
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Playlists Page -->
+            <section id="playlists" class="page" style="display: block;">
+                <h2>Playlists</h2>
+                <div class="create-playlist">
+                    <button id="create-playlist-btn"><i class="fas fa-plus"></i> Create Playlist</button>
+                </div>
+                <div class="playlists-container">
+                    <!-- Playlist cards will be rendered here -->
+                </div>
+            </section>
+            
+            <!-- Offline Downloads Page -->
+            <section id="offline" class="page" style="display: none;">
+                <h2>Offline Downloads</h2>
+                <div class="file-upload">
+                    <label for="audio-upload" class="browse-btn">
+                        <i class="fas fa-folder-open"></i>
+                        <span>Browse</span>
+                    </label>
+                    <input type="file" id="audio-upload" accept="audio/*" multiple>
+                </div>
+                <div class="offline-songs">
+                    <!-- Offline songs will be dynamically added here -->
+                </div>
+            </section>
+            
+            <!-- Settings Page -->
+            <section id="settings" class="page" style="display: none;">
+                <h2>Settings</h2>
+                
+                <!-- Theme Setting Card -->
+                <div class="settings-card">
+                    <div class="settings-row">
+                        <span class="setting-label">Light</span>
+                        <label class="modern-toggle">
+                            <input type="checkbox" id="theme-toggle-checkbox">
+                            <span class="toggle-slider"></span>
+                        </label>
+                        <span class="setting-label">Dark</span>
+                    </div>
+                </div>
+                
+                <!-- Audio Quality Card -->
+                <div class="settings-card">
+                    <div class="settings-row">
+                        <span class="setting-name">Audio Quality</span>
+                        <select id="audio-quality" class="settings-select">
+                            <option value="low">Low</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Keyboard Shortcuts Card -->
+                <div class="settings-card">
+                    <div class="settings-row">
+                        <span class="setting-name">Keyboard Shortcuts</span>
+                        <button id="show-shortcuts" class="settings-button">View Shortcuts</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <!-- Now Playing Bar -->
+    <div class="now-playing-bar">
+        <div class="now-playing-left">
+            <div class="album-preview" id="show-player-card">
+                <div class="album-icon">
+                    <i class="fas fa-music"></i>
+                </div>
+                <div class="track-info">
+                    <div class="track-name">Select a song</div>
+                    <div class="artist-name">Artist</div>
+                </div>
+            </div>
+        </div>
+        <div class="now-playing-center">
+            <div class="player-controls">
+                <button id="shuffle-btn"><i class="fas fa-random"></i></button>
+                <button id="prev-btn"><i class="fas fa-step-backward"></i></button>
+                <button id="play-btn"><i class="fas fa-play"></i></button>
+                <button id="next-btn"><i class="fas fa-step-forward"></i></button>
+                <button id="repeat-btn"><i class="fas fa-redo"></i></button>
+            </div>
+            <div class="progress-container">
+                <span class="current-time">0:00</span>
+                <div class="progress-bar">
+                    <div class="progress"></div>
+                </div>
+                <span class="total-time">0:00</span>
+            </div>
+        </div>
+        <div class="now-playing-right">
+            <button id="volume-btn"><i class="fas fa-volume-up"></i></button>
+            <div class="volume-slider">
+                <div class="volume-progress"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Expanded Player Card -->
+    <div class="player-card" id="player-card">
+        <div class="card-header">
+            <button class="minimize-btn"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="compact-player-card">
+            <div class="card-title-area">
+                <h3 class="card-track-name" style="background: transparent !important; background-color: transparent !important;">Song Name</h3>
+                <p class="card-artist-name">Unknown Artist · Unknown Album</p>
+            </div>
+            
+            <div class="card-progress">
+                <div class="card-time-display">
+                    <span class="card-current-time">0:10</span>
+                    <span class="card-total-time">2:58</span>
+                </div>
+                <div class="card-progress-bar">
+                    <div class="progress-slider"></div>
+                    <div class="card-progress-fill"></div>
+                </div>
+            </div>
+            
+            <div class="card-controls-row">
+                <button class="card-control-btn" id="card-prev-btn"><i class="fas fa-step-backward"></i></button>
+                <button class="card-control-btn play-btn" id="card-play-btn"><i class="fas fa-pause"></i></button>
+                <button class="card-control-btn" id="card-next-btn"><i class="fas fa-step-forward"></i></button>
+                <button class="card-control-btn" id="card-repeat-btn"><i class="fas fa-redo"></i></button>
+            </div>
+            
+            <div class="card-action-buttons">
+                <button class="card-action-btn heart-btn"><i class="fas fa-heart"></i></button>
+                <button class="card-action-btn download-btn"><i class="fas fa-download"></i></button>
+            </div>
+            
+            <div class="up-next-label">Up Next</div>
+        </div>
+    </div>
+    
+    <!-- Playlist Modal -->
+    <div id="playlist-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3 id="modal-title">Create Playlist</h3>
+            <div class="form-group">
+                <label for="playlist-name">Playlist Name</label>
+                <input type="text" id="playlist-name" placeholder="Enter playlist name">
+            </div>
+            <button id="save-playlist-btn">Save</button>
+        </div>
+    </div>
+    
+    <!-- Add to Playlist Modal -->
+    <div id="add-to-playlist-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3>Add to Playlist</h3>
+            <div class="playlists-list">
+                <!-- Playlists will be rendered here -->
+            </div>
+            <button id="create-new-playlist-btn">Create New Playlist</button>
+        </div>
+    </div>
+    
+    <!-- Notification Toast -->
+    <div id="notification-toast" class="notification-toast">
+        <span id="notification-message"></span>
+    </div>
+    
+    <!-- Modal for Keyboard Shortcuts -->
+    <div class="modal" id="shortcuts-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3>Keyboard Shortcuts</h3>
+            <div class="shortcuts-list">
+                <div class="shortcut">
+                    <span class="key">Space</span>
+                    <span class="action">Play/Pause</span>
+                </div>
+                <div class="shortcut">
+                    <span class="key">→</span>
+                    <span class="action">Next Track</span>
+                </div>
+                <div class="shortcut">
+                    <span class="key">←</span>
+                    <span class="action">Previous Track</span>
+                </div>
+                <div class="shortcut">
+                    <span class="key">L</span>
+                    <span class="action">Toggle Loop</span>
+                </div>
+                <div class="shortcut">
+                    <span class="key">S</span>
+                    <span class="action">Toggle Shuffle</span>
+                </div>
+                <div class="shortcut">
+                    <span class="key">M</span>
+                    <span class="action">Mute/Unmute</span>
+                </div>
+                <div class="shortcut">
+                    <span class="key">↑</span>
+                    <span class="action">Volume Up</span>
+                </div>
+                <div class="shortcut">
+                    <span class="key">↓</span>
+                    <span class="action">Volume Down</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/app.js"></script>
+    <script>
+        // Direct navigation fix
+        window.addEventListener('load', function() {
+            console.log('Window loaded - setting up navigation');
+            
+            // Remove any blue backgrounds that might be added by external code
+            document.querySelectorAll('.card-track-name, .card-artist-name').forEach(el => {
+                el.style.backgroundColor = 'transparent';
+                el.style.background = 'transparent';
+                Array.from(el.children).forEach(child => {
+                    child.style.backgroundColor = 'transparent';
+                    child.style.background = 'transparent';
+                });
+            });
+            
+            // Get all navigation items
+            const homeLink = document.querySelector('.navigation li[data-page="home"]');
+            const playlistsLink = document.querySelector('.navigation li[data-page="playlists"]');
+            const offlineLink = document.querySelector('.navigation li[data-page="offline"]');
+            const settingsLink = document.querySelector('.navigation li[data-page="settings"]');
+            
+            // Get all pages
+            const homePage = document.getElementById('home');
+            const playlistsPage = document.getElementById('playlists');
+            const offlinePage = document.getElementById('offline');
+            const settingsPage = document.getElementById('settings');
+            
+            // Home click handler
+            if (homeLink) {
+                homeLink.onclick = function() {
+                    homePage.style.display = 'block';
+                    playlistsPage.style.display = 'none';
+                    offlinePage.style.display = 'none';
+                    settingsPage.style.display = 'none';
+                    
+                    homeLink.classList.add('active');
+                    playlistsLink.classList.remove('active');
+                    offlineLink.classList.remove('active');
+                    settingsLink.classList.remove('active');
+                    
+                    return false;
+                };
+            }
+            
+            // Playlists click handler
+            if (playlistsLink) {
+                playlistsLink.onclick = function() {
+                    homePage.style.display = 'none';
+                    playlistsPage.style.display = 'block';
+                    offlinePage.style.display = 'none';
+                    settingsPage.style.display = 'none';
+                    
+                    homeLink.classList.remove('active');
+                    playlistsLink.classList.add('active');
+                    offlineLink.classList.remove('active');
+                    settingsLink.classList.remove('active');
+                    
+                    return false;
+                };
+            }
+            
+            // Offline click handler
+            if (offlineLink) {
+                offlineLink.onclick = function() {
+                    homePage.style.display = 'none';
+                    playlistsPage.style.display = 'none';
+                    offlinePage.style.display = 'block';
+                    settingsPage.style.display = 'none';
+                    
+                    homeLink.classList.remove('active');
+                    playlistsLink.classList.remove('active');
+                    offlineLink.classList.add('active');
+                    settingsLink.classList.remove('active');
+                    
+                    return false;
+                };
+            }
+            
+            // Settings click handler
+            if (settingsLink) {
+                settingsLink.onclick = function() {
+                    homePage.style.display = 'none';
+                    playlistsPage.style.display = 'none';
+                    offlinePage.style.display = 'none';
+                    settingsPage.style.display = 'block';
+                    
+                    homeLink.classList.remove('active');
+                    playlistsLink.classList.remove('active');
+                    offlineLink.classList.remove('active');
+                    settingsLink.classList.add('active');
+                    
+                    return false;
+                };
+            }
+            
+            // Show current active page
+            const currentActive = document.querySelector('.navigation li.active');
+            if (currentActive) {
+                const targetPage = currentActive.getAttribute('data-page');
+                if (targetPage === 'home') homePage.style.display = 'block';
+                if (targetPage === 'playlists') playlistsPage.style.display = 'block';
+                if (targetPage === 'offline') offlinePage.style.display = 'block';
+                if (targetPage === 'settings') settingsPage.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html> 
